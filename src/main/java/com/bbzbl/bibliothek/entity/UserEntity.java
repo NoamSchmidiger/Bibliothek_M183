@@ -35,5 +35,6 @@ public class UserEntity {
 
     private String telNumber;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 }
