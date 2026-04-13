@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><title>Media Library</title></head>
+<body>
+<h2>Library</h2>
+
+<div style="margin-bottom: 20px; padding: 10px; background-color: #f0f0f0;">
+    <span>Logged in as: <b sec:authentication="name"></b></span>
+
+    <a th:href="@{/profile}">
+        <button type="button">Edit My Profile</button>
+    </a>
+
+    <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/users}">
+        <button type="button" style="background-color: orange;">Manage All Users</button>
+    </a>
+
+    <form th:action="@{/logout}" method="post" style="display:inline;">
+        <button type="submit">Logout</button>
+    </form>
+</div>
+
+<div sec:authorize="hasAuthority('ADMIN')" style="margin-bottom: 10px;">
+    <form th:action="@{/media/new}" method="get">
+        <button type="submit" style="background-color: green; color: white;">+ Add New Medium</button>
+    </form>
+</div>
+
+<table border="1" style="width: 100%;">
+    <tr>
+        <th>Title</th><th>Author</th><th>Type</th><th>Actions</th>
+    </tr>
+    <tr th:each="m : ${media}">
+        <td th:text="${m.title}"></td>
+        <td th:text="${m.author}"></td>
+        <td th:text="${m.type}"></td>
+        <td>
+            <form th:action="@{/media/{isbn}(isbn=${m.isbn})}" method="get" style="display:inline;">
+                <button type="submit">View</button>
+            </form>
+
+            <form sec:authorize="hasAuthority('ADMIN')" th:action="@{/media/edit/{id}(id=${m.id})}" method="get" style="display:inline;">
+                <button type="submit">Edit</button>
+            </form>
+
+            <form sec:authorize="hasAuthority('ADMIN')" th:action="@{/media/{id}(id=${m.id})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this medium?');">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" style="color:red;">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

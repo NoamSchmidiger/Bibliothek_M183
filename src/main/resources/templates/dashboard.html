@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+
+<h1>Welcome, <span th:text="${user.firstName}">Name</span>!</h1>
+<p>Your role is: <strong th:text="${user.role}">ROLE</strong></p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+
+<hr>
+
+<h2>Media Library</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Type</th>
+        <th>ISBN</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="medium : ${allMedia}">
+        <td th:text="${medium.title}">Title</td>
+        <td th:text="${medium.author}">Author</td>
+        <td th:text="${medium.type}">Type</td>
+        <td th:text="${medium.isbn}">ISBN</td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(allMedia)}">
+        <td colspan="4">No media available.</td>
+    </tr>
+    </tbody>
+</table>
+
+<div sec:authorize="hasAuthority('ADMIN')" style="margin-top: 20px; padding: 10px; border: 2px solid red;">
+    <h3>🚨 Admin Control Panel</h3>
+    <p>You can see this because you have the ADMIN role.</p>
+    <button>Add New Medium</button>
+    <button>Manage All Users</button>
+</div>
+
+</body>
+</html>

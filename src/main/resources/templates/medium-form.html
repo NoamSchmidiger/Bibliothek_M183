@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Manage Medium</title></head>
+<body>
+<h2 th:text="${mediumDto.id == null ? 'Add New Medium' : 'Edit Medium'}"></h2>
+
+<form th:action="${mediumDto.id == null ? '/media' : '/media/' + mediumDto.id}"
+      th:object="${mediumDto}" method="post">
+
+    <input th:if="${mediumDto.id != null}" type="hidden" name="_method" value="put" />
+    <input type="hidden" th:field="*{id}"/>
+
+    <div>
+        <label>Title:</label> <input type="text" th:field="*{title}"/>
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Author:</label> <input type="text" th:field="*{author}"/>
+        <div th:if="${#fields.hasErrors('author')}" th:errors="*{author}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Type:</label>
+        <select th:field="*{type}">
+            <option value="BOOK">Book</option>
+            <option value="CD">CD</option>
+            <option value="DVD">DVD</option>
+        </select>
+    </div>
+
+    <div>
+        <label>ISBN:</label> <input type="text" th:field="*{isbn}"/>
+        <div th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}" style="color:red;"></div>
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+<br>
+<a th:href="@{/media}">Cancel</a>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Manage Users</title></head>
+<body>
+<h2>User Management (Admin Only)</h2>
+<a th:href="@{/media}">Back to Library</a>
+
+<table border="1" style="margin-top: 20px; width: 100%;">
+    <tr>
+        <th>ID</th><th>Username</th><th>Name</th><th>Role</th><th>Actions</th>
+    </tr>
+    <tr th:each="u : ${users}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.username}"></td>
+        <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+        <td th:text="${u.role}"></td>
+        <td>
+            <form th:action="@{/users/{id}(id=${u.id})}" method="post" onsubmit="return confirm('Delete this user?');">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit" style="color:red;">Delete</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
