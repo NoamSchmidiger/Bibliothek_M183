@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><title>Medium Details</title></head>
+<body>
+<a th:href="@{/media}">Back to Library</a>
+<h2 th:text="${medium.title}">Title</h2>
+
+<ul>
+    <li><b>Author:</b> <span th:text="${medium.author}"></span></li>
+    <li><b>Type:</b> <span th:text="${medium.type}"></span></li>
+    <li><b>ISBN:</b> <span th:text="${medium.isbn}"></span></li>
+</ul>
+
+<div sec:authorize="hasAuthority('ADMIN')">
+    <a th:href="@{/media/edit/{id}(id=${medium.id})}"><button>Edit</button></a>
+    <form th:action="@{/media/{id}(id=${medium.id})}" method="post" style="display:inline;">
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit" style="color:red;">Delete</button>
+    </form>
+</div>
+</body>
+</html>

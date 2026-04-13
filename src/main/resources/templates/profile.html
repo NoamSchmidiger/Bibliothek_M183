@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head><title>My Profile</title></head>
+<body>
+<h2>My Profile</h2>
+<a th:href="@{/media}">Back to Library</a>
+
+<div th:if="${param.updated}" style="color: green; margin-bottom: 15px;">
+    Profile updated successfully!
+</div>
+
+<form th:action="@{/users/{id}(id=${userDto.id})}" th:object="${userDto}" method="post">
+    <input type="hidden" name="_method" value="put" />
+
+    <input type="hidden" th:field="*{id}"/>
+    <input type="hidden" th:field="*{username}"/>
+    <input type="hidden" th:field="*{role}"/>
+
+    <div>
+        <label>First Name:</label> <input type="text" th:field="*{firstName}"/>
+        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Last Name:</label> <input type="text" th:field="*{lastName}"/>
+        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Email:</label> <input type="email" th:field="*{email}"/>
+        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Password (Required to save):</label> <input type="password" th:field="*{password}"/>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red;"></div>
+    </div>
+
+    <div>
+        <label>Phone:</label> <input type="text" th:field="*{telNumber}"/>
+        <div th:if="${#fields.hasErrors('telNumber')}" th:errors="*{telNumber}" style="color:red;"></div>
+    </div>
+
+    <button type="submit" style="margin-top: 10px;">Update Profile</button>
+</form>
+
+<hr>
+
+<h3 style="color:red;">Danger Zone</h3>
+<form th:action="@{/users/{id}(id=${userDto.id})}" method="post" onsubmit="return confirm('Are you sure you want to delete your account?');">
+    <input type="hidden" name="_method" value="delete" />
+    <button type="submit" style="background-color:red; color:white;">Delete My Account</button>
+</form>
+</body>
+</html>
